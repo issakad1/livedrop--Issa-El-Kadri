@@ -11,6 +11,6 @@
 
 ---
 
-## Why these two
+## Why did I chose these 2 AI touchpoints:
 
-We selected *Smart Review Summarizer* and *Fraudulent Order Detector* because they deliver measurable impact with low integration risk. Summarized reviews increase *conversion rates* by reducing decision friction, while fraud detection decreases *financial loss* and manual support overhead. Both rely on data ShopLite already has (reviews, orders, payments), making them feasible this sprint. Clear fallbacks (raw reviews, rules engine) ensure graceful degradation, while latency and cost targets are within acceptable bounds.
+I selected *Smart Review Summarizer* and *Fraudulent Order Detector* because they deliver measurable impact with low integration risk. Summarized reviews increase *conversion rates* by reducing decision friction, while fraud detection decreases *financial loss* and manual support overhead. Both rely on data ShopLite already has (reviews, orders, payments), making them feasible this sprint. Clear fallbacks (raw reviews, rules engine) ensure graceful degradation, while latency and cost targets are within acceptable bounds.
