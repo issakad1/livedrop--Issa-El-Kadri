@@ -1,7 +1,6 @@
 # AI Touchpoint Specs
 
 ---
-
 ## 1. Smart Review Summarizer
 
 ### Problem Statement
