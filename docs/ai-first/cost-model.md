@@ -71,4 +71,4 @@
 ## Cost Levers if Over Budget
 - Further reduce input length (fewer reviews or metadata fields).  
 - Pre-compute results in batches instead of real-time calls.  
-- Use distilled/custom models trained on ShopLite-specific data.
+- Use custom models trained on ShopLite-specific data.
