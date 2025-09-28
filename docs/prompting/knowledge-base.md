@@ -53,7 +53,7 @@ Shoplite’s tracking system integrates directly with major local and internatio
 By combining reliable delivery partners with an integrated tracking system, Shoplite ensures buyers always know the status of their purchases, reducing disputes and increasing satisfaction.  
 
 ---
----
+
 
 ## Document 6: Return and Refund Policies  
 
@@ -118,7 +118,7 @@ Payouts are issued to sellers every *14 days*, with commissions and fees already
 By publishing all fees clearly and providing itemized reports, Shoplite builds trust with its sellers. The fee structure encourages sellers to scale their businesses while ensuring that the platform continues to invest in infrastructure, marketing, and security. This balance between fairness and sustainability is one of the reasons Shoplite attracts both small entrepreneurs and large retailers.  
 
 ---
----
+
 
 ## Document 11: Customer Support Procedures  
 
