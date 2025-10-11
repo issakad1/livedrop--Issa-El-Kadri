@@ -1,0 +1,184 @@
+[
+  {
+    "id": "p1",
+    "title": "Wireless Noise-Cancelling Headphones",
+    "price": 89.99,
+    "image": "https://images.pexels.com/photos/9371408/pexels-photo-9371408.jpeg",
+    "tags": ["audio", "wireless", "headphones"],
+    "stockQty": 20,
+    "description": "Experience crystal-clear audio and immersive sound with our wireless noise-cancelling headphones. Designed for all-day comfort, these headphones feature soft ear cushions, up to 30 hours of battery life, and touch controls for seamless listening."
+  },
+  {
+    "id": "p2",
+    "title": "Smartwatch Series 5 Pro",
+    "price": 149.99,
+    "image": "https://images.pexels.com/photos/9584702/pexels-photo-9584702.jpeg",
+    "tags": ["wearables", "smartwatch", "fitness"],
+    "stockQty": 12,
+    "description": "Track your health, fitness, and notifications effortlessly with the Smartwatch Series 5 Pro. Equipped with heart-rate monitoring, GPS, and water resistance, it’s the perfect companion for your active lifestyle."
+  },
+  {
+    "id": "p3",
+    "title": "Portable Bluetooth Speaker",
+    "price": 59.99,
+    "image": "https://images.pexels.com/photos/9767549/pexels-photo-9767549.jpeg",
+    "tags": ["audio", "speaker"],
+    "stockQty": 25,
+    "description": "Enjoy rich, powerful sound anywhere with this portable Bluetooth speaker. Compact yet loud, it offers 10-hour battery life and waterproof protection — ideal for outdoor parties and travel."
+  },
+  {
+    "id": "p4",
+    "title": "Ergonomic Laptop Backpack",
+    "price": 44.5,
+    "image": "https://images.pexels.com/photos/2452345/pexels-photo-2452345.jpeg",
+    "tags": ["bags", "office", "travel"],
+    "stockQty": 18,
+    "description": "Carry your essentials in comfort with this durable ergonomic laptop backpack. It includes multiple compartments, anti-theft zippers, and padded support for laptops up to 17 inches."
+  },
+  {
+    "id": "p5",
+    "title": "RGB Gaming Mouse",
+    "price": 39.95,
+    "image": "https://images.pexels.com/photos/19012033/pexels-photo-19012033.jpeg",
+    "tags": ["gaming", "accessories", "mouse"],
+    "stockQty": 30,
+    "description": "Dominate your gaming sessions with precision and style. The RGB Gaming Mouse features customizable lighting, 6 programmable buttons, and a high-precision 12,000 DPI optical sensor."
+  },
+  {
+    "id": "p6",
+    "title": "gaming Keyboard Pro",
+    "price": 79.99,
+    "image": "https://images.pexels.com/photos/671629/pexels-photo-671629.jpeg",
+    "tags": ["keyboard", "gaming", "office"],
+    "stockQty": 15,
+    "description": "Type with confidence and speed using this gaming keyboard featuring red switches for tactile feedback, customizable RGB lighting, and a durable aluminum frame."
+  },
+  {
+    "id": "p7",
+    "title": "USB-C Fast Charging Cable",
+    "price": 9.99,
+    "image": "https://images.pexels.com/photos/18641665/pexels-photo-18641665.png",
+    "tags": ["cables", "charging"],
+    "stockQty": 60,
+    "description": "Charge your devices quickly and safely with this premium braided USB-C cable. It supports fast charging up to 60W and data transfer speeds of 480 Mbps."
+  },
+  {
+    "id": "p8",
+    "title": "4K HDMI Cable UltraSpeed",
+    "price": 14.99,
+    "image": "https://images.pexels.com/photos/7054723/pexels-photo-7054723.jpeg",
+    "tags": ["cables", "video"],
+    "stockQty": 40,
+    "description": "Connect your devices with ease using this 4K HDMI UltraSpeed cable. Enjoy crystal-clear visuals, HDR support, and ultra-fast data transfer for TVs, monitors, and consoles."
+  },
+  {
+    "id": "p9",
+    "title": "Wireless Optical Mouse",
+    "price": 24.99,
+    "image": "https://images.pexels.com/photos/13870517/pexels-photo-13870517.jpeg",
+    "tags": ["wireless", "office", "mouse"],
+    "stockQty": 35,
+    "description": "A lightweight and ergonomic wireless mouse with silent clicks and long-lasting battery life. Perfect for both work and travel with plug-and-play connectivity."
+  },
+  {
+    "id": "p10",
+    "title": "Noise Cancelling Earbuds",
+    "price": 99.99,
+    "image": "https://images.pexels.com/photos/6867253/pexels-photo-6867253.jpeg",
+    "tags": ["audio", "earbuds"],
+    "stockQty": 22,
+    "description": "Compact, comfortable, and powerful. These earbuds offer deep bass, clear highs, and active noise cancellation with 8 hours of playtime per charge."
+  },
+  {
+  "id": "p11",
+  "title": "Smart Wi-Fi Security Camera",
+  "price": 64.99,
+  "image": "https://images.pexels.com/photos/27574914/pexels-photo-27574914.jpeg",
+  "tags": ["smart-home", "security"],
+  "stockQty": 25,
+  "description": "Stay connected and secure with this high-definition Wi-Fi security camera. Features include night vision, motion alerts, two-way audio, and remote viewing from your smartphone or tablet."
+}
+,
+  {
+    "id": "p12",
+    "title": "Portable 1TB SSD Drive",
+    "price": 129.99,
+    "image": "https://images.pexels.com/photos/5335964/pexels-photo-5335964.jpeg",
+    "tags": ["storage", "portable"],
+    "stockQty": 15,
+    "description": "Fast, reliable, and compact — this 1TB SSD offers read/write speeds up to 1000MB/s. Ideal for photographers, gamers, and professionals on the go."
+  },
+  {
+    "id": "p13",
+    "title": "Ergonomic Office Chair Deluxe",
+    "price": 189.99,
+    "image": "https://images.pexels.com/photos/28706299/pexels-photo-28706299.jpeg",
+    "tags": ["furniture", "office"],
+    "stockQty": 10,
+    "description": "Stay comfortable during long work hours with this ergonomic office chair. It features lumbar support, breathable mesh, and adjustable height and tilt settings."
+  },
+  {
+    "id": "p14",
+    "title": "Wireless Charger Pad 15W",
+    "price": 29.99,
+    "image": "https://images.pexels.com/photos/7952558/pexels-photo-7952558.jpeg",
+    "tags": ["charging", "wireless"],
+    "stockQty": 40,
+    "description": "Charge your devices effortlessly with this slim 15W wireless charger. Compatible with all Qi-enabled devices and features temperature control for safety."
+  },
+  {
+    "id": "p15",
+    "title": "Fitness Tracker Band Plus",
+    "price": 49.99,
+    "image": "https://images.pexels.com/photos/5081914/pexels-photo-5081914.jpeg",
+    "tags": ["fitness", "wearables"],
+    "stockQty": 28,
+    "description": "Track your steps, heart rate, sleep, and calories with precision. The Fitness Tracker Band Plus offers a bright display and 7-day battery life."
+  },
+  {
+  "id": "p16",
+  "title": "ErgoLift Pro Laptop Docking Station",
+  "price": 89.99,
+  "image": "https://tse1.mm.bing.net/th/id/OIP.QCxyneU59idPEqV0rCk7RwHaHQ?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3",
+  "tags": ["office", "accessories", "laptop"],
+  "stockQty": 20,
+  "description": "Upgrade your workspace with the ErgoLift Pro Laptop Docking Station. Crafted from aerospace-grade aluminum, it provides ergonomic height adjustment, dual USB-C ports, and active cooling for your laptop — perfect for productivity and comfort."
+}
+,
+  {
+    "id": "p17",
+    "title": "Wireless Keyboard & Mouse Combo",
+    "price": 54.99,
+    "image": "https://images.pexels.com/photos/20500378/pexels-photo-20500378.jpeg",
+    "tags": ["office", "wireless"],
+    "stockQty": 30,
+    "description": "Upgrade your setup with this wireless keyboard and mouse combo. Quiet, responsive, and energy-efficient with a 12-month battery life."
+  },
+  {
+    "id": "p18",
+    "title": "Smart Wi-Fi Plug",
+    "price": 16.99,
+    "image": "https://tse2.mm.bing.net/th/id/OIP.SRKYXmTZ-vzV14k8fjjkrgHaHa?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3",
+    "tags": ["smart-home", "automation"],
+    "stockQty": 45,
+    "description": "Control your appliances from anywhere with this smart plug. Set timers, monitor energy usage, and integrate with Alexa or Google Home."
+  },
+  {
+    "id": "p19",
+    "title": "Power Bank 10,000 mAh",
+    "price": 24.49,
+    "image": "https://images.pexels.com/photos/518530/pexels-photo-518530.jpeg",
+    "tags": ["charging", "portable"],
+    "stockQty": 33,
+    "description": "Keep your devices charged on the go with this 10,000 mAh power bank. Dual USB outputs and fast-charging support make it a travel essential."
+  },
+  {
+    "id": "p20",
+    "title": "USB Flash Drive 64 GB",
+    "price": 11.99,
+    "image": "https://th.bing.com/th/id/OIP.MxDiHu2SH-XQN0TMtv_vZAHaFM?w=243&h=180&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
+    "tags": ["storage", "usb"],
+    "stockQty": 50,
+    "description": "Compact and durable 64GB USB flash drive for everyday file transfers. Plug-and-play design, compatible with all major operating systems."
+  }
+]

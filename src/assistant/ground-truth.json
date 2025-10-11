@@ -1,0 +1,27 @@
+[
+  { "qid": "Q01", "category": "Returns", "question": "What is the return window?", "answer": "You can return items within 30 days of delivery with proof of purchase." },
+  { "qid": "Q02", "category": "Returns", "question": "Can I return items without a receipt?", "answer": "A receipt or order confirmation is required for all returns." },
+  { "qid": "Q03", "category": "Returns", "question": "Are clearance items eligible for returns?", "answer": "Clearance items are final sale and cannot be returned." },
+  { "qid": "Q04", "category": "Returns", "question": "Who pays for return shipping?", "answer": "Customers are responsible for return shipping unless the item was defective or incorrect." },
+
+  { "qid": "Q05", "category": "Shipping", "question": "Do you ship internationally?", "answer": "Yes, we ship to most countries. Duties may apply at delivery." },
+  { "qid": "Q06", "category": "Shipping", "question": "How long does standard delivery take?", "answer": "Standard delivery takes 3–5 business days after dispatch." },
+  { "qid": "Q07", "category": "Shipping", "question": "Is express shipping available?", "answer": "Yes, express shipping is available for an extra fee and arrives in 1–2 business days." },
+  { "qid": "Q08", "category": "Shipping", "question": "Can I change my delivery address after ordering?", "answer": "You may update your delivery address within 1 hour of placing the order." },
+
+  { "qid": "Q09", "category": "Payments", "question": "Which payment methods are accepted?", "answer": "We accept major credit cards, PayPal, and Apple Pay." },
+  { "qid": "Q10", "category": "Payments", "question": "Do you support installment payments?", "answer": "Yes, installment plans are available through selected providers like Klarna." },
+  { "qid": "Q11", "category": "Payments", "question": "Is my payment information secure?", "answer": "Yes, all transactions are encrypted and processed through PCI-compliant gateways." },
+  { "qid": "Q12", "category": "Payments", "question": "Do you charge sales tax?", "answer": "Sales tax is applied at checkout based on your shipping address." },
+
+  { "qid": "Q13", "category": "Warranty", "question": "Is there a product warranty?", "answer": "Most products include a 1-year limited warranty against manufacturing defects." },
+  { "qid": "Q14", "category": "Warranty", "question": "How do I make a warranty claim?", "answer": "To make a warranty claim, contact our support team with your order details and photos." },
+  { "qid": "Q15", "category": "Warranty", "question": "Does the warranty cover accidental damage?", "answer": "No, the warranty only covers manufacturing defects, not accidental damage." },
+
+  { "qid": "Q16", "category": "Orders", "question": "Can I cancel my order?", "answer": "Orders can be canceled within 1 hour of placing them if they haven’t shipped yet." },
+  { "qid": "Q17", "category": "Orders", "question": "How do I track my order?", "answer": "Once shipped, you will receive an email with a tracking link." },
+  { "qid": "Q18", "category": "Orders", "question": "Why was my order canceled automatically?", "answer": "Orders may be canceled automatically if payment is not received or stock is unavailable." },
+
+  { "qid": "Q19", "category": "Support", "question": "How can I contact customer support?", "answer": "You can reach customer support via live chat, email, or phone during business hours." },
+  { "qid": "Q20", "category": "Support", "question": "What are your customer service hours?", "answer": "Customer service is available Monday to Friday, 9 AM to 6 PM local time." }
+]
