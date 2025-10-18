@@ -1,5 +1,5 @@
-﻿// ================================
-// apps/api/src/db.js - MongoDB Driver Connection
+// ================================
+// apps/api/src/db.js - MongoDB Driver Connection (Railway + Atlas Ready)
 // ================================
 import dotenv from "dotenv";
 import { MongoClient, ObjectId } from "mongodb";
@@ -10,7 +10,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 const DB_NAME = process.env.DB_NAME || "week5";
 
 if (!MONGODB_URI) {
-  console.error("[FATAL] Missing MONGODB_URI in .env");
+  console.error("[FATAL] Missing MONGODB_URI in environment");
   process.exit(1);
 }
 
@@ -22,29 +22,30 @@ let db = null;
  */
 export async function connectDB() {
   try {
-    if (client) {
+    if (client && db) {
       console.log("[DB] Already connected");
-      return { ok: true, via: "mongodb-driver" };
+      return db;
     }
 
     console.log("[DB] Connecting to MongoDB...");
+
+    // ✅ Use secure TLS settings — compatible with MongoDB Atlas
     client = new MongoClient(MONGODB_URI, {
-      serverSelectionTimeoutMS: 5000,
+      ssl: true,
+      serverSelectionTimeoutMS: 10000,
       connectTimeoutMS: 10000,
-      tlsAllowInvalidCertificates: true,
-      tlsAllowInvalidHostnames: true,
     });
 
     await client.connect();
     db = client.db(DB_NAME);
-    
+
     // Test connection
     await db.command({ ping: 1 });
-    
     console.log(`[DB] Connected successfully to database: ${DB_NAME}`);
-    return { ok: true, via: "mongodb-driver" };
+
+    return db;
   } catch (error) {
-    console.error("[DB] Connection failed:", error.message);
+    console.error("❌ [DB] Connection failed:", error);
     throw error;
   }
 }
@@ -53,10 +54,7 @@ export async function connectDB() {
  * Get database collections
  */
 export function collections() {
-  if (!db) {
-    throw new Error("[DB] Not connected. Call connectDB() first.");
-  }
-
+  if (!db) throw new Error("[DB] Not connected. Call connectDB() first.");
   return {
     customers: db.collection("customers"),
     products: db.collection("products"),
@@ -76,7 +74,4 @@ export async function closeDB() {
   }
 }
 
-/**
- * Get ObjectId helper
- */
 export { ObjectId };
