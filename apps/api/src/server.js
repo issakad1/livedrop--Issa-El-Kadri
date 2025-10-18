@@ -12,6 +12,7 @@ import productsRouter from "./routes/products.js";
 import ordersRouter from "./routes/orders.js";
 import analyticsRouter from "./routes/analytics.js";
 import dashboardRouter, { perf } from "./routes/dashboard.js";
+import seedRouter from "./routes/seed.js";
 import { apiError } from "./util/error.js";
 import { performance } from "node:perf_hooks";
 
@@ -39,6 +40,7 @@ app.use("/api/products", productsRouter);
 app.use("/api/orders", ordersRouter);
 app.use("/api/analytics", analyticsRouter);
 app.use("/api/dashboard", dashboardRouter);
+app.use("/api", seedRouter);
 
 app.use((req, res) => apiError(res, 404, "NOT_FOUND", `Route ${req.method} ${req.path} not found`));
 app.use((err, req, res, _next) => {
@@ -65,6 +67,3 @@ async function startServer() {
 }
 
 startServer();
-
-
-
