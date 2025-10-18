@@ -50,18 +50,21 @@ const port = Number(process.env.PORT || 8080);
 
 async function startServer() {
   try {
+    // Wait for the MongoDB connection
     const db = await connectDB();
     app.locals.db = db;
     console.log("[DB] Connected successfully");
 
+    // Start the server only after DB connection
     app.listen(port, () => {
       console.log(`[API] Server running on port ${port} (Data API)`);
     });
   } catch (err) {
     console.error("❌ Failed to connect to MongoDB:", err);
-    process.exit(1);
+    process.exit(1); // Exit if DB connection fails
   }
 }
 
 startServer();
+
 
