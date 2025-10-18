@@ -47,6 +47,21 @@ app.use((err, req, res, _next) => {
 });
 
 const port = Number(process.env.PORT || 8080);
-const db = connectDB();
-app.locals.db = db;
-app.listen(port, () => console.log(`[API] http://localhost:${port} (Data API)`));
+
+async function startServer() {
+  try {
+    const db = await connectDB();
+    app.locals.db = db;
+    console.log("[DB] Connected successfully");
+
+    app.listen(port, () => {
+      console.log(`[API] Server running on port ${port} (Data API)`);
+    });
+  } catch (err) {
+    console.error("❌ Failed to connect to MongoDB:", err);
+    process.exit(1);
+  }
+}
+
+startServer();
+
