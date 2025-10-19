@@ -2,18 +2,32 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { formatCurrency } from "../../lib/format";
 
-export default function ProductCard({ id, title, price, image, onAdd }: any) {
+type Props = {
+  id: string;
+  title: string;
+  price: number;
+  image?: string;
+  description?: string;
+  onAdd: () => void;
+};
+
+export default function ProductCard({
+  id,
+  title,
+  price,
+  image,
+  onAdd,
+}: Props) {
   const [added, setAdded] = useState(false);
 
   const handleAdd = () => {
     onAdd();
     setAdded(true);
-    setTimeout(() => setAdded(false), 1500); // Hide after 1.5s
+    setTimeout(() => setAdded(false), 1500);
   };
 
   return (
-    <div className="relative border rounded-lg p-4 bg-white shadow-sm">
-      {/* Added Badge */}
+    <div className="relative border rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition">
       {added && (
         <div className="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full shadow">
           ✔ Added to Cart
@@ -22,12 +36,14 @@ export default function ProductCard({ id, title, price, image, onAdd }: any) {
 
       <Link to={`/p/${id}`}>
         <img
-          src={image ?? "/logo.svg"}
+          src={image || "/placeholder.png"} // ✅ fallback
           alt={title}
           className="w-full h-40 object-cover rounded-md mb-3"
         />
         <h3 className="font-semibold text-gray-800 truncate">{title}</h3>
-        <p className="text-gray-700 font-medium mt-1">{formatCurrency(price)}</p>
+        <p className="text-gray-700 font-medium mt-1">
+          {formatCurrency(price)}
+        </p>
         <p className="text-blue-600 text-sm mt-1 underline">View details →</p>
       </Link>
 

@@ -1,19 +1,15 @@
-// ================================
-// apps/storefront/apps/api/src/routes/products.js
-// ================================
+// apps/api/src/routes/products.js
 import { Router } from "express";
-import { collections } from "../db.js";
+import { collections, toObjectId } from "../db.js"; // ✅ Import helper
 import { apiError, wrapAsync } from "../util/error.js";
 import { parseBody, ProductSchema } from "../util/validate.js";
 
 const r = Router();
 
-// ✅ Don’t call collections() here; call it inside each route handler
-
 r.get(
   "/",
   wrapAsync(async (req, res) => {
-    const { products } = collections(); // ✅ safe here
+    const { products } = collections();
     const search = String(req.query.search || "").trim();
     const tag = String(req.query.tag || "").trim();
     const sort = String(req.query.sort || "relevance");
@@ -51,10 +47,18 @@ r.get(
 r.get(
   "/:id",
   wrapAsync(async (req, res) => {
-    const { products } = collections(); // ✅ safe here too
-    const id = String(req.params.id);
-    const doc = await products.findOne({ _id: id });
-    if (!doc) return apiError(res, 404, "PRODUCT_NOT_FOUND", "Invalid product id");
+    const { products } = collections();
+    
+    // ✅ Convert string to ObjectId safely
+    let objectId;
+    try {
+      objectId = toObjectId(req.params.id);
+    } catch (error) {
+      return apiError(res, 400, "INVALID_ID", "Invalid product ID format");
+    }
+    
+    const doc = await products.findOne({ _id: objectId });
+    if (!doc) return apiError(res, 404, "PRODUCT_NOT_FOUND", "Product not found");
     res.json(doc);
   })
 );
@@ -62,7 +66,7 @@ r.get(
 r.post(
   "/",
   wrapAsync(async (req, res) => {
-    const { products } = collections(); // ✅ safe here
+    const { products } = collections();
     const body = parseBody(ProductSchema, req.body);
     const now = new Date();
     const doc = { ...body, createdAt: now, updatedAt: now };

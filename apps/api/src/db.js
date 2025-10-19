@@ -1,6 +1,4 @@
-// ================================
-// apps/api/src/db.js - MongoDB Driver Connection (Railway + Atlas Ready)
-// ================================
+// apps/api/src/db.js
 import dotenv from "dotenv";
 import { MongoClient, ObjectId } from "mongodb";
 
@@ -17,9 +15,6 @@ if (!MONGODB_URI) {
 let client = null;
 let db = null;
 
-/**
- * Connect to MongoDB using connection string
- */
 export async function connectDB() {
   try {
     if (client && db) {
@@ -29,7 +24,6 @@ export async function connectDB() {
 
     console.log("[DB] Connecting to MongoDB...");
 
-    // ✅ Use secure TLS settings — compatible with MongoDB Atlas
     client = new MongoClient(MONGODB_URI, {
       ssl: true,
       serverSelectionTimeoutMS: 10000,
@@ -39,7 +33,6 @@ export async function connectDB() {
     await client.connect();
     db = client.db(DB_NAME);
 
-    // Test connection
     await db.command({ ping: 1 });
     console.log(`[DB] Connected successfully to database: ${DB_NAME}`);
 
@@ -50,9 +43,6 @@ export async function connectDB() {
   }
 }
 
-/**
- * Get database collections
- */
 export function collections() {
   if (!db) throw new Error("[DB] Not connected. Call connectDB() first.");
   return {
@@ -62,9 +52,6 @@ export function collections() {
   };
 }
 
-/**
- * Close database connection
- */
 export async function closeDB() {
   if (client) {
     await client.close();
@@ -72,6 +59,14 @@ export async function closeDB() {
     db = null;
     console.log("[DB] Connection closed");
   }
+}
+
+// ✅ Helper function to safely convert string to ObjectId
+export function toObjectId(id) {
+  if (!id) return null;
+  if (id instanceof ObjectId) return id;
+  if (!ObjectId.isValid(id)) throw new Error("Invalid ObjectId format");
+  return new ObjectId(id);
 }
 
 export { ObjectId };

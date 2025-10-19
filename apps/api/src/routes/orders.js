@@ -1,81 +1,91 @@
-// ================================
-// apps/storefront/apps/api/src/routes/orders.js
-// ================================
+// apps/api/src/routes/orders.js
 import { Router } from "express";
-import { collections } from "../db.js";
+import { collections, toObjectId } from "../db.js";
 import { apiError, wrapAsync } from "../util/error.js";
-import { parseBody, CreateOrderSchema } from "../util/validate.js";
+import { parseBody, OrderSchema } from "../util/validate.js";
 
 const r = Router();
 
-// ✅ Don’t call collections() at the top
-
-r.post(
+// Get orders (optionally filtered by customerId)
+r.get(
   "/",
   wrapAsync(async (req, res) => {
-    const { orders, customers, products } = collections(); // ✅ safe here
-    const body = parseBody(CreateOrderSchema, req.body);
-
-    const customer = await customers.findOne({ _id: body.customerId });
-    if (!customer)
-      return apiError(res, 400, "INVALID_CUSTOMER", "customerId not found");
-
-    let total = 0;
-    for (const it of body.items) {
-      const prod = await products.findOne({ _id: it.productId });
-      if (!prod)
-        return apiError(
-          res,
-          400,
-          "INVALID_PRODUCT",
-          `productId ${it.productId} not found`
-        );
-      total += it.price * it.quantity;
+    const { orders } = collections();
+    const customerId = req.query.customerId;
+    
+    if (customerId) {
+      let objectId;
+      try {
+        objectId = toObjectId(customerId);
+      } catch (error) {
+        return apiError(res, 400, "INVALID_ID", "Invalid customer ID format");
+      }
+      
+      const docs = await orders.find({ customerId: objectId }).sort({ createdAt: -1 }).toArray();
+      return res.json(docs);
     }
-
-    const now = new Date();
-    const order = {
-      customerId: customer._id,
-      items: body.items,
-      total: Number(total.toFixed(2)),
-      status: "PENDING",
-      carrier: null,
-      estimatedDelivery: null,
-      createdAt: now,
-      updatedAt: now,
-    };
-
-    const ins = await orders.insertOne(order);
-    res.status(201).json({ ...order, _id: ins.insertedId });
+    
+    // Return all orders
+    const docs = await orders.find({}).sort({ createdAt: -1 }).toArray();
+    res.json(docs);
   })
 );
 
+// Get single order by ID
 r.get(
   "/:id",
   wrapAsync(async (req, res) => {
-    const { orders } = collections(); // ✅ safe here
-    const id = String(req.params.id);
-    const doc = await orders.findOne({ _id: id });
-    if (!doc)
-      return apiError(res, 404, "ORDER_NOT_FOUND", "Invalid order id");
+    const { orders } = collections();
+    
+    let objectId;
+    try {
+      objectId = toObjectId(req.params.id);
+    } catch (error) {
+      return apiError(res, 400, "INVALID_ID", "Invalid order ID format");
+    }
+    
+    const doc = await orders.findOne({ _id: objectId });
+    if (!doc) {
+      return apiError(res, 404, "ORDER_NOT_FOUND", "Order not found");
+    }
+    
     res.json(doc);
   })
 );
 
-r.get(
+// Create new order
+r.post(
   "/",
   wrapAsync(async (req, res) => {
-    const { orders } = collections(); // ✅ safe here
-    const customerId = String(req.query.customerId || "").trim();
-    if (!customerId)
-      return apiError(res, 400, "BAD_REQUEST", "customerId query is required");
-    const items = await orders
-      .find({ customerId })
-      .sort({ createdAt: -1 })
-      .toArray();
-    res.json(items);
+    const { orders } = collections();
+    const body = parseBody(OrderSchema, req.body);
+    
+    // Convert customerId and productIds to ObjectId
+    let customerId;
+    try {
+      customerId = toObjectId(body.customerId);
+    } catch (error) {
+      return apiError(res, 400, "INVALID_CUSTOMER_ID", "Invalid customer ID");
+    }
+    
+    const items = body.items.map(item => ({
+      ...item,
+      productId: toObjectId(item.productId)
+    }));
+    
+    const now = new Date();
+    const doc = {
+      ...body,
+      customerId,
+      items,
+      status: "PENDING",
+      createdAt: now,
+      updatedAt: now,
+    };
+    
+    const ins = await orders.insertOne(doc);
+    res.status(201).json({ ...doc, _id: ins.insertedId });
   })
 );
 
 export default r;
-
