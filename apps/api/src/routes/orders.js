@@ -2,7 +2,7 @@
 import { Router } from "express";
 import { collections, toObjectId } from "../db.js";
 import { apiError, wrapAsync } from "../util/error.js";
-import { parseBody, OrderSchema } from "../util/validate.js";
+import { parseBody, CreateOrderSchema } from "../util/validate.js"; // ✅ Fixed
 
 const r = Router();
 
@@ -58,7 +58,7 @@ r.post(
   "/",
   wrapAsync(async (req, res) => {
     const { orders } = collections();
-    const body = parseBody(OrderSchema, req.body);
+    const body = parseBody(CreateOrderSchema, req.body); // ✅ Fixed - was OrderSchema
     
     // Convert customerId and productIds to ObjectId
     let customerId;
@@ -73,12 +73,17 @@ r.post(
       productId: toObjectId(item.productId)
     }));
     
+    // Calculate total
+    const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    
     const now = new Date();
     const doc = {
-      ...body,
       customerId,
       items,
+      total,
       status: "PENDING",
+      carrier: null,
+      estimatedDelivery: null,
       createdAt: now,
       updatedAt: now,
     };
