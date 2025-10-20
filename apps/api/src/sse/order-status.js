@@ -99,6 +99,11 @@ export async function streamOrderStatus(req, res) {
       updateData.estimatedDelivery = estimatedDelivery.toISOString();
     }
 
+    // ✅ NEW: Update delivery date to today when delivered
+    if (currentStatus === "DELIVERED") {
+      updateData.estimatedDelivery = now.toISOString(); // Delivered today!
+    }
+
     await orders.updateOne(
       { _id: objectId },
       { $set: updateData }
