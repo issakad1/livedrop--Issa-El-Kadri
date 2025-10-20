@@ -1,10 +1,16 @@
-// apps/api/src/routes/orders.js
+// ================================
+// apps/api/src/routes/orders.js - COMPLETE WITH SSE
+// ================================
 import { Router } from "express";
 import { collections, toObjectId } from "../db.js";
 import { apiError, wrapAsync } from "../util/error.js";
-import { parseBody, CreateOrderSchema } from "../util/validate.js"; // ✅ Fixed
+import { parseBody, CreateOrderSchema } from "../util/validate.js";
+import { streamOrderStatus } from "../sse/order-status.js"; // ✅ SSE import
 
 const r = Router();
+
+// ✅ SSE endpoint - MUST come BEFORE /:id route
+r.get("/:id/stream", streamOrderStatus);
 
 // Get orders (optionally filtered by customerId)
 r.get(
@@ -58,7 +64,7 @@ r.post(
   "/",
   wrapAsync(async (req, res) => {
     const { orders } = collections();
-    const body = parseBody(CreateOrderSchema, req.body); // ✅ Fixed - was OrderSchema
+    const body = parseBody(CreateOrderSchema, req.body);
     
     // Convert customerId and productIds to ObjectId
     let customerId;
