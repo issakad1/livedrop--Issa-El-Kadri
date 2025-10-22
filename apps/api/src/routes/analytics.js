@@ -1,5 +1,6 @@
 // ================================
-// apps/storefront/apps/api/src/routes/analytics.js
+// apps/api/src/routes/analytics.js
+// Analytics with Database Aggregation - PART 5 COMPLETE
 // ================================
 import { Router } from "express";
 import { collections } from "../db.js";
@@ -7,12 +8,13 @@ import { apiError, wrapAsync } from "../util/error.js";
 
 const r = Router();
 
-// ✅ Removed the top-level collections() call
-
+// ================================
+// DAILY REVENUE (Part 1 Requirement)
+// ================================
 r.get(
   "/daily-revenue",
   wrapAsync(async (req, res) => {
-    const { orders } = collections(); // ✅ safe inside handler
+    const { orders } = collections();
     const from = String(req.query.from || "");
     const to = String(req.query.to || "");
 
@@ -43,15 +45,18 @@ r.get(
       { $sort: { date: 1 } },
     ];
 
-    const rows = await orders.aggregate(pipeline).toArray(); // ✅ add .toArray()
+    const rows = await orders.aggregate(pipeline).toArray();
     res.json(rows);
   })
 );
 
+// ================================
+// DASHBOARD METRICS (Part 1 Requirement)
+// ================================
 r.get(
   "/dashboard-metrics",
   wrapAsync(async (_req, res) => {
-    const { orders } = collections(); // ✅ safe inside handler
+    const { orders } = collections();
     const pipeline = [
       {
         $group: {
@@ -71,8 +76,41 @@ r.get(
       },
     ];
 
-    const [agg] = await orders.aggregate(pipeline).toArray(); // ✅ add .toArray()
+    const [agg] = await orders.aggregate(pipeline).toArray();
     res.json(agg || { revenue: 0, orders: 0, avgOrderValue: 0 });
+  })
+);
+
+// ================================
+// ORDERS BY STATUS - ✅ NEW FOR PART 5
+// ================================
+r.get(
+  "/orders-by-status",
+  wrapAsync(async (_req, res) => {
+    const { orders } = collections();
+    
+    // ✅ Use MongoDB aggregation to group by status
+    const pipeline = [
+      {
+        $group: {
+          _id: "$status",
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          status: "$_id",
+          count: 1
+        }
+      },
+      {
+        $sort: { count: -1 }
+      }
+    ];
+    
+    const results = await orders.aggregate(pipeline).toArray();
+    res.json(results);
   })
 );
 

@@ -35,9 +35,62 @@ export async function fetchCustomerByEmail(email: string) {
   if (!res.ok) throw new Error("Customer not found");
   return res.json();
 }
+
 export async function getOrderStatus(orderId: string) {
   const res = await fetch(`${API_BASE_URL}/api/orders/${orderId}`);
   if (!res.ok) throw new Error("Failed to fetch order status");
   return res.json();
 }
 
+// ✅ ADD THIS FUNCTION:
+export async function placeOrder(cart: Array<{ id: string; qty: number }>) {
+  // Get logged-in customer from localStorage
+  const customerStr = localStorage.getItem("customer");
+  if (!customerStr) {
+    throw new Error("Please log in to place an order");
+  }
+  
+  const customer = JSON.parse(customerStr);
+  
+  // Fetch product details for each cart item
+  const itemsWithDetails = await Promise.all(
+    cart.map(async (item) => {
+      const product = await getProduct(item.id);
+      return {
+        productId: product._id,
+        name: product.name,
+        price: product.price,
+        quantity: item.qty
+      };
+    })
+  );
+  
+  // Calculate total
+  const total = itemsWithDetails.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  
+  // Create order
+  const orderData = {
+    customerId: customer._id,
+    items: itemsWithDetails,
+    total
+  };
+  
+  const res = await fetch(`${API_BASE_URL}/api/orders`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(orderData),
+  });
+  
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.error?.message || "Failed to place order");
+  }
+  
+  const order = await res.json();
+  return { orderId: order._id };
+}

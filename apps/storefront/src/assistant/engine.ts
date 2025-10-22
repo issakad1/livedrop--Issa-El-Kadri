@@ -1,68 +1,109 @@
-import gt from "./ground-truth.json";
-import { getOrderStatus } from "../lib/api";
+// =======================================
+// src/assistant/engine.ts
+// Fixed & Type-safe Assistant Engine
+// =======================================
 
-const ORDER_ID_RE = /[A-Z0-9]{10,}/g;
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
 
-function tokenize(s: string) {
-  return s
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, "")
-    .split(/\s+/)
-    .filter(Boolean);
+// Literal role type
+export type Role = "user" | "assistant";
+
+// Message format used in the chat
+export interface ChatMessage {
+  role: Role;
+  content: string;
 }
 
-function overlapScore(q: string, cand: string) {
-  const qSet = new Set(tokenize(q));
-  const cSet = new Set(tokenize(cand));
-  let hits = 0;
-  qSet.forEach((t) => {
-    if (cSet.has(t)) hits++;
-  });
-  return hits / Math.max(1, qSet.size);
+// Structured backend response
+export interface AssistantResponse {
+  success?: boolean;
+  text: string;
+  intent?: string;
+  confidence?: number;
+  citations?: string[];
+  functionsCalled?: string[];
+  usedLLM?: boolean;
+  grounded?: boolean;
+  error?: string;
 }
 
-function maskId(id: string) {
-  return id.slice(-4).padStart(id.length, "•");
-}
-
-export async function askSupport(input: string): Promise<string> {
-  let response = "";
+/**
+ * Send a message to the backend assistant API.
+ * Returns a structured response (never throws).
+ */
+export async function processQuery(
+  query: string,
+  sessionId: string,
+  userEmail: string
+): Promise<AssistantResponse> {
+  if (!query.trim()) {
+    return { text: "Please type a message first.", success: false };
+  }
 
   try {
-    // 🔹 Detect order IDs and fetch status
-    const ids = input.match(ORDER_ID_RE) ?? [];
-    const id = ids?.[0]; // may be undefined
+    const response = await fetch(`${API_BASE_URL}/assistant/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query, sessionId, userEmail }),
+    });
 
-    if (id) {
-      const status = await getOrderStatus(id);
-      response += `Order ${maskId(id)} status: ${status.status}`;
-      if (status.carrier) response += ` • Carrier: ${status.carrier}`;
-      if (status.eta) response += ` • ETA: ${status.eta}`;
-      response += "\n\n";
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      console.warn("Backend error:", err);
+      return {
+        text: err.error || "Server error while processing your request.",
+        success: false,
+        error: err.error || `HTTP ${response.status}`,
+      };
     }
 
-    // 🔹 Match FAQs from ground-truth.json
-    let best = { qid: "", score: 0, answer: "" };
-    for (const row of gt as { qid: string; question: string; answer: string }[]) {
-      const s = Math.max(
-        overlapScore(input, row.question),
-        overlapScore(input, row.answer)
-      );
-      if (s > best.score) best = { qid: row.qid, score: s, answer: row.answer };
-    }
-
-    // 🔹 Fallback if no relevant match
-    if (!best.qid || best.score < 0.45) {
-      return (
-        response +
-        "Sorry, I can’t answer that from our approved materials. Please rephrase or contact a human agent."
-      );
-    }
-
-    // ✅ Return final combined response
-    return response + `${best.answer} [${best.qid}]`;
-  } catch (err) {
-    console.error("askSupport error:", err);
-    return "Sorry, something went wrong while processing your request.";
+    const result = await response.json();
+    return {
+      success: result.success ?? true,
+      text: result.text ?? "No response received.",
+      intent: result.intent,
+      confidence: result.confidence,
+      citations: result.citations ?? [],
+      functionsCalled: result.functionsCalled ?? [],
+      usedLLM: result.metadata?.usedLLM ?? false,
+      grounded: result.metadata?.grounded ?? true,
+    };
+  } catch (err: any) {
+    console.error("Network or fetch error:", err);
+    return {
+      text:
+        "Sorry, I couldn't connect to the assistant. Please check your connection and try again.",
+      success: false,
+      error: err.message,
+    };
   }
+}
+
+/**
+ * Helper to handle chat interactions in UI
+ * (adds user + assistant messages in sequence)
+ */
+export async function sendChatMessage(
+  query: string,
+  sessionId: string,
+  userEmail: string,
+  messages: ChatMessage[],
+  setMessages: (msgs: ChatMessage[]) => void
+) {
+  // Add user message
+  const userMessage: ChatMessage = { role: "user", content: query };
+  const updated = [...messages, userMessage];
+  setMessages(updated);
+
+  // Get assistant reply
+  const reply = await processQuery(query, sessionId, userEmail);
+
+  // Add assistant message
+  const assistantMessage: ChatMessage = {
+    role: "assistant",
+    content: reply.text,
+  };
+
+  setMessages([...updated, assistantMessage]);
 }

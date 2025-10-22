@@ -60,7 +60,6 @@ export async function closeDB() {
     console.log("[DB] Connection closed");
   }
 }
-
 // ✅ Helper function to safely convert string to ObjectId
 export function toObjectId(id) {
   if (!id) return null;
@@ -69,4 +68,13 @@ export function toObjectId(id) {
   return new ObjectId(id);
 }
 
-export { ObjectId };
+// ✅ Provide getDb helper for use in function-registry.js
+export function getDb() {
+  if (!db) {
+    throw new Error("[DB] Database not connected. Please call connectDB() first.");
+  }
+  return db;
+}
+
+// ❌ Remove this (causes duplicate export)
+// export { ObjectId };

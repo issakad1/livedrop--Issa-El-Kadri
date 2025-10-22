@@ -5,12 +5,10 @@ import { Router } from "express";
 import { collections, toObjectId } from "../db.js";
 import { apiError, wrapAsync } from "../util/error.js";
 import { parseBody, CreateOrderSchema } from "../util/validate.js";
-import { streamOrderStatus } from "../sse/order-status.js"; // ✅ SSE import
 
 const r = Router();
 
-// ✅ SSE endpoint - MUST come BEFORE /:id route
-r.get("/:id/stream", streamOrderStatus);
+
 
 // Get orders (optionally filtered by customerId)
 r.get(

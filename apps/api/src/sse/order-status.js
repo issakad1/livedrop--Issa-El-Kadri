@@ -1,20 +1,24 @@
 // ================================
-// apps/api/src/sse/order-status.js - Server-Sent Events for Order Tracking
+// apps/api/src/sse/order-status.js
+// Server-Sent Events (SSE) for Real-Time Order Tracking
 // ================================
+import express from "express";
 import { collections, toObjectId } from "../db.js";
 
+const router = express.Router();
+
 /**
- * SSE endpoint for real-time order status updates
  * GET /api/orders/:id/stream
  * 
- * Auto-simulates order progression:
+ * Sends real-time updates for a specific order using SSE.
+ * Simulates order progression automatically:
  * PENDING → PROCESSING → SHIPPED → DELIVERED
  */
-export async function streamOrderStatus(req, res) {
+router.get("/:id/stream", async (req, res) => {
   const { id } = req.params;
   const { orders } = collections();
 
-  // Validate order ID
+  // ✅ Validate ID
   let objectId;
   try {
     objectId = toObjectId(id);
@@ -24,7 +28,7 @@ export async function streamOrderStatus(req, res) {
     });
   }
 
-  // Get initial order
+  // ✅ Find the order
   const order = await orders.findOne({ _id: objectId });
   if (!order) {
     return res.status(404).json({
@@ -32,17 +36,18 @@ export async function streamOrderStatus(req, res) {
     });
   }
 
-  // Set SSE headers
+  // ✅ SSE Headers
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
   res.setHeader("Access-Control-Allow-Origin", "*");
 
-  // Send initial status immediately
+  // Utility function to send events
   const sendEvent = (data) => {
     res.write(`data: ${JSON.stringify(data)}\n\n`);
   };
 
+  // Send initial order state immediately
   sendEvent({
     orderId: order._id,
     status: order.status,
@@ -52,7 +57,7 @@ export async function streamOrderStatus(req, res) {
     message: `Order is currently ${order.status}`
   });
 
-  // Status progression flow
+  // ✅ Define status flow simulation
   const statusFlow = {
     PENDING: { next: "PROCESSING", delay: 3000 },
     PROCESSING: { next: "SHIPPED", delay: 5000 },
@@ -61,55 +66,41 @@ export async function streamOrderStatus(req, res) {
   };
 
   let currentStatus = order.status;
-  let intervalId = null;
 
-  // Auto-progress order status
+  // Function to simulate status progression
   const progressOrder = async () => {
     const flow = statusFlow[currentStatus];
-    
-    if (!flow || !flow.next) {
-      // Order is already DELIVERED or unknown status
-      clearInterval(intervalId);
-      res.end();
-      return;
-    }
+    if (!flow || !flow.next) return; // Reached final state
 
-    // Wait for specified delay
-    await new Promise(resolve => setTimeout(resolve, flow.delay));
-
-    // Update to next status
+    await new Promise((r) => setTimeout(r, flow.delay));
     currentStatus = flow.next;
     const now = new Date();
-    
-    // Update database
+
     const updateData = {
       status: currentStatus,
       updatedAt: now
     };
 
-    // Add carrier info when shipped
+    // Add carrier and estimated delivery when shipped
     if (currentStatus === "SHIPPED" && !order.carrier) {
       const carriers = ["UPS", "DHL", "USPS", "FedEx"];
       updateData.carrier = carriers[Math.floor(Math.random() * carriers.length)];
-      
-      // Set estimated delivery (3-7 days from now)
-      const daysToAdd = Math.floor(Math.random() * 5) + 3;
-      const estimatedDelivery = new Date(now);
-      estimatedDelivery.setDate(estimatedDelivery.getDate() + daysToAdd);
-      updateData.estimatedDelivery = estimatedDelivery.toISOString();
+
+      const days = Math.floor(Math.random() * 5) + 3; // 3–7 days
+      const eta = new Date(now);
+      eta.setDate(eta.getDate() + days);
+      updateData.estimatedDelivery = eta.toISOString();
     }
 
-    // ✅ NEW: Update delivery date to today when delivered
+    // Set delivery time to now when delivered
     if (currentStatus === "DELIVERED") {
-      updateData.estimatedDelivery = now.toISOString(); // Delivered today!
+      updateData.estimatedDelivery = now.toISOString();
     }
 
-    await orders.updateOne(
-      { _id: objectId },
-      { $set: updateData }
-    );
+    // Update DB
+    await orders.updateOne({ _id: objectId }, { $set: updateData });
 
-    // Send SSE event to client
+    // Send update to client
     sendEvent({
       orderId: order._id,
       status: currentStatus,
@@ -121,24 +112,24 @@ export async function streamOrderStatus(req, res) {
 
     console.log(`[SSE] Order ${id} → ${currentStatus}`);
 
-    // If DELIVERED, close the stream
+    // End stream after delivery
     if (currentStatus === "DELIVERED") {
-      clearInterval(intervalId);
       setTimeout(() => res.end(), 1000);
     }
   };
 
-  // Start auto-progression
-  intervalId = setInterval(progressOrder, 100); // Check frequently
+  // ✅ Start status progression interval
+  const loop = setInterval(progressOrder, 100);
 
-  // Clean up on client disconnect
+  // ✅ Cleanup on client disconnect
   req.on("close", () => {
     console.log(`[SSE] Client disconnected from order ${id}`);
-    if (intervalId) clearInterval(intervalId);
+    clearInterval(loop);
     res.end();
   });
-}
+});
 
+// Helper to generate readable status messages
 function getStatusMessage(status) {
   const messages = {
     PENDING: "Order received and awaiting processing",
@@ -148,3 +139,5 @@ function getStatusMessage(status) {
   };
   return messages[status] || `Order status: ${status}`;
 }
+
+export default router;

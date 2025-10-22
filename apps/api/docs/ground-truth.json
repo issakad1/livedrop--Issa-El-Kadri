@@ -1,0 +1,177 @@
+[
+  {
+    "id": "Returns1.1",
+    "question": "What is your return policy?",
+    "answer": "Items can be returned within 30 days of purchase with original receipt. All items must be in original condition with tags attached. Refunds are processed within 5-7 business days to your original payment method.",
+    "category": "returns",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Returns1.2",
+    "question": "Can I return items without a receipt?",
+    "answer": "Returns without a receipt may be accepted at the discretion of our customer service team. Store credit will be issued at the current selling price. A valid government-issued ID is required for all non-receipted returns.",
+    "category": "returns",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Returns1.3",
+    "question": "What items cannot be returned?",
+    "answer": "The following items are final sale and cannot be returned: personalized or customized items, intimate apparel, pierced jewelry, digital downloads, and clearance items marked as final sale. All other products can be returned within 30 days.",
+    "category": "returns",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Shipping2.1",
+    "question": "What are your shipping options and costs?",
+    "answer": "We offer Standard shipping (5-7 business days, $5.99), Express shipping (2-3 business days, $12.99), and Overnight shipping (next business day, $24.99). Free standard shipping is available on all orders over $50.",
+    "category": "shipping",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Shipping2.2",
+    "question": "Do you ship internationally?",
+    "answer": "Currently, we only ship within the United States and Canada. International shipping is not available at this time. We hope to expand our shipping options in the future. Canadian orders may be subject to customs fees and duties.",
+    "category": "shipping",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Shipping2.3",
+    "question": "How can I track my order?",
+    "answer": "Once your order ships, you will receive a tracking number via email. You can use this number to track your package on the carrier's website. You can also track your order status directly on our website by visiting the Order Status page.",
+    "category": "shipping",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Shipping2.4",
+    "question": "What if my package is lost or stolen?",
+    "answer": "If your tracking shows the package was delivered but you did not receive it, please check with neighbors and your building management. Contact us within 48 hours and we will open an investigation with the carrier. We will issue a replacement or refund once the investigation is complete, typically within 7-10 business days.",
+    "category": "shipping",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Warranty3.1",
+    "question": "Do your products come with a warranty?",
+    "answer": "All products come with a standard 1-year manufacturer's warranty covering defects in materials and workmanship. This warranty does not cover normal wear and tear, misuse, or accidental damage. Extended warranty options are available for purchase on select products.",
+    "category": "warranty",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Warranty3.2",
+    "question": "How do I make a warranty claim?",
+    "answer": "To make a warranty claim, contact our customer support team with your order number and a description of the issue. We may request photos of the defect. Approved warranty claims will receive a replacement product or full refund within 10-14 business days.",
+    "category": "warranty",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Payment4.1",
+    "question": "What payment methods do you accept?",
+    "answer": "We accept all major credit cards (Visa, Mastercard, American Express, Discover), PayPal, Apple Pay, Google Pay, and Shop Pay. We also offer Buy Now, Pay Later options through Affirm and Klarna for eligible purchases.",
+    "category": "payment",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Payment4.2",
+    "question": "Is my payment information secure?",
+    "answer": "Yes, we use industry-standard SSL encryption to protect your payment information. We are PCI DSS compliant and never store your full credit card details on our servers. All transactions are processed through secure, certified payment gateways.",
+    "category": "payment",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Privacy5.1",
+    "question": "How do you use my personal information?",
+    "answer": "We collect personal information to process orders, improve our services, and send promotional emails (with your consent). We never sell your personal information to third parties. You can review our full Privacy Policy on our website for complete details.",
+    "category": "privacy",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Privacy5.2",
+    "question": "Can I delete my account and personal data?",
+    "answer": "Yes, you can request account deletion and removal of your personal data at any time by contacting our support team. We will process your request within 30 days. Note that we may retain certain transaction records as required by law.",
+    "category": "privacy",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Discounts6.1",
+    "question": "Do you offer student or military discounts?",
+    "answer": "Yes! We offer a 15% discount for students with a valid .edu email address and a 10% discount for active military members and veterans with valid ID. Discounts cannot be combined with other promotional offers.",
+    "category": "discounts",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Exchange7.1",
+    "question": "Can I exchange an item for a different size or color?",
+    "answer": "Yes, exchanges are accepted within 30 days of purchase for items in original condition. To exchange an item, initiate a return and place a new order for the desired size or color. Return shipping is free for exchanges.",
+    "category": "exchange",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "GiftCards8.1",
+    "question": "Do you sell gift cards?",
+    "answer": "Yes, we offer digital gift cards in denominations of $25, $50, $100, and $200. Gift cards are delivered via email and never expire. They can be used for any products on our website and combined with promotional discounts.",
+    "category": "giftcards",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Cancellation9.1",
+    "question": "Can I cancel my order after placing it?",
+    "answer": "Orders can be cancelled within 1 hour of placement if they have not yet been processed. After processing begins, cancellations are not possible, but you can return the item once delivered. To cancel, contact our support team immediately with your order number.",
+    "category": "cancellation",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Stock10.1",
+    "question": "What happens if an item is out of stock?",
+    "answer": "Out of stock items can be backordered and will ship when inventory is replenished, typically within 2-4 weeks. You will receive an email notification when the item is back in stock and ready to ship. You can cancel a backorder at any time before it ships.",
+    "category": "stock",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Bulk11.1",
+    "question": "Do you offer bulk or wholesale pricing?",
+    "answer": "Yes, we offer special pricing for bulk orders of 20+ units of the same item. Please contact our wholesale team at wholesale@storefront.com with details about your order, and we will provide a custom quote within 24-48 hours.",
+    "category": "bulk",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Support12.1",
+    "question": "What are your customer service hours?",
+    "answer": "Our customer support team is available Monday through Friday, 9 AM to 8 PM EST, and Saturday-Sunday, 10 AM to 6 PM EST. You can reach us via live chat, email at support@storefront.com, or phone at 1-800-SHOP-NOW. Average response time for emails is within 24 hours.",
+    "category": "support",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Sizing13.1",
+    "question": "How do I find the right size?",
+    "answer": "Each product page includes a detailed size chart with measurements. For clothing, we recommend measuring yourself and comparing to our size guide. If you're between sizes, we suggest sizing up for a more comfortable fit. Our customer reviews often include helpful sizing feedback from other customers.",
+    "category": "sizing",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Care14.1",
+    "question": "How should I care for my products?",
+    "answer": "Care instructions are included with each product and can be found on the product page under 'Care Instructions.' For clothing, follow the care label instructions carefully. For electronics, refer to the user manual. If care instructions are unclear, contact our support team for specific guidance.",
+    "category": "care",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Damage15.1",
+    "question": "What if my order arrives damaged?",
+    "answer": "If your order arrives damaged, please take photos of the damage and packaging, then contact us within 48 hours of delivery. We will arrange for a replacement to be sent immediately at no cost to you. You do not need to return the damaged item unless we specifically request it.",
+    "category": "damage",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "PriceMatch16.1",
+    "question": "Do you price match competitors?",
+    "answer": "Yes, we offer price matching for identical items sold by authorized retailers. The competitor's price must be currently available and verifiable online. Submit a price match request within 7 days of purchase with a link to the competitor's product page. Price matching excludes clearance, closeout, and marketplace sellers.",
+    "category": "pricematch",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Newsletter17.1",
+    "question": "How can I sign up for promotions and discounts?",
+    "answer": "Subscribe to our email newsletter to receive exclusive discounts, early access to sales, and new product announcements. New subscribers receive a 10% off coupon code immediately. You can unsubscribe at any time. We typically send 2-3 emails per week and never spam or sell your email address.",
+    "category": "promotions",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  }
+]

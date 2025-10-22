@@ -1,0 +1,30 @@
+{
+  "name": "week5-tests",
+  "version": "1.0.0",
+  "description": "Test suite for Week 5 API and Assistant",
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:api": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/api.test.js",
+    "test:assistant": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/assistant.test.js",
+    "test:integration": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/integration.test.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testTimeout": 10000,
+    "verbose": true,
+    "collectCoverageFrom": [
+      "apps/api/src/**/*.js",
+      "!apps/api/src/**/*.test.js"
+    ],
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ]
+  }
+}
