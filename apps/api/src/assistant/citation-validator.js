@@ -15,7 +15,7 @@ let knowledgeBase = null;
 
 function loadKnowledgeBase() {
   if (!knowledgeBase) {
-    const kbPath = path.join(__dirname, '../../docs/ground-truth.json');
+    const groundTruthPath = path.join(__dirname, '../../../docs/ground-truth.json');
     const fileContents = fs.readFileSync(kbPath, 'utf8');
     knowledgeBase = JSON.parse(fileContents);
   }

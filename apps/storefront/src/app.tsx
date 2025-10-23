@@ -16,13 +16,11 @@ function AppContent() {
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-4">
-        <div className="w-full">
-          <div className="text-center mb-8">
-            <h1 className="text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent mb-2">
-              Storefront
-            </h1>
-            <p className="text-gray-600">Your favorite online shop</p>
-          </div>
+        <div className="w-full max-w-md mx-auto text-center">
+          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent mb-2">
+            Storefront
+          </h1>
+          <p className="text-gray-600 mb-8">Your favorite online shop</p>
           <UserLogin onLogin={login} />
         </div>
       </div>
@@ -42,21 +40,26 @@ function AppContent() {
             Storefront
           </Link>
 
-          {/* User info and actions */}
+          {/* ========================== USER + ACTIONS ========================== */}
           <div className="flex items-center gap-3">
-            {/* User Profile + Logout (Unified Design) */}
-            <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-sm hover:shadow-md transition-all">
-              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-semibold text-sm">
+            {/* ✅ User Badge (Dynamic + Modern) */}
+            <div className="flex items-center gap-3 px-4 py-2 bg-gray-100 rounded-full border border-gray-200 hover:shadow-sm transition-all">
+              {/* Avatar */}
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white flex items-center justify-center font-semibold">
                 {customer?.name?.charAt(0).toUpperCase() || "U"}
               </div>
-              <span className="text-sm font-medium hidden sm:block">
-                {customer?.name || "User"}
+
+              {/* Username (Dynamic) */}
+              <span className="text-sm font-semibold text-gray-800">
+                {customer?.name || "Guest"}
               </span>
+
+              {/* Logout Button */}
               <button
                 onClick={logout}
                 aria-label="Logout"
-                className="ml-2 w-7 h-7 flex items-center justify-center rounded-full bg-white/20 hover:bg-red-500 transition-all"
                 title="Logout"
+                className="w-7 h-7 flex items-center justify-center rounded-full bg-white text-gray-600 hover:bg-red-50 hover:text-red-500 border border-gray-200 transition-all"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +78,7 @@ function AppContent() {
               </button>
             </div>
 
-            {/* My Orders Button */}
+            {/* Orders Button */}
             <Link
               to="/my-orders"
               className="px-4 py-2 rounded-md bg-purple-500 text-white hover:bg-purple-600 transition-all transform hover:scale-105 active:scale-95 shadow-sm active:shadow-inner"

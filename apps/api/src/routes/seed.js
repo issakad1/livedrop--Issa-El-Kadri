@@ -1,290 +1,299 @@
 // ================================
-// apps/api/src/routes/seed.js - Seed endpoint with CONSISTENT data
+// apps/api/src/routes/seed.js - Seed endpoint (REALISTIC DATA, INSTRUCTOR COMPLIANT)
 // ================================
-import express from 'express';
-import { faker } from '@faker-js/faker';
-import { collections } from '../db.js';
+import express from "express";
+import { faker } from "@faker-js/faker";
+import { collections } from "../db.js";
 
 const router = express.Router();
 
-// ✅ SET FAKER SEED - Makes all random data consistent
-faker.seed(12345);
-
-const pick = (arr, n) => faker.helpers.arrayElements(arr, n);
-
-router.post('/seed', async (req, res) => {
+router.post("/seed", async (req, res) => {
   try {
     const { customers: customersCol, products: productsCol, orders: ordersCol } = collections();
 
-    // Clear existing data
+    // Clear old data
     await customersCol.deleteMany({});
     await productsCol.deleteMany({});
     await ordersCol.deleteMany({});
 
-    // Generate customers (now consistent due to faker.seed())
-    const customerCount = 12; // Fixed count instead of random
-    const customers = Array.from({ length: customerCount }, (_, i) => ({
+    // ================================
+    // 1️⃣ CUSTOMERS (12 total)
+    // ================================
+    const customers = Array.from({ length: 12 }, (_, i) => ({
       name: i === 0 ? "Demo User" : faker.person.fullName(),
       email: i === 0 ? "demo@example.com" : faker.internet.email().toLowerCase(),
       phone: faker.phone.number(),
       address: `${faker.location.streetAddress()}, ${faker.location.city()}, ${faker.location.state()} ${faker.location.zipCode()}`,
-      createdAt: faker.date.recent({ days: 60 })
+      createdAt: faker.date.recent({ days: 60 }),
     }));
 
     const custRes = await customersCol.insertMany(customers);
     const customerIds = Object.values(custRes.insertedIds);
+    const demoCustomerId = customerIds[0];
 
-    // Generate products with your templates
-    const categories = ["Audio", "Fashion", "Home", "Gaming", "Fitness", "Photography", "Accessories"];
-    const tagsPool = ["bestseller", "new", "sale", "wireless", "eco", "premium", "budget", "portable", "lightweight", "pro"];
-    const productCount = 25; // ✅ Fixed count
-    
-    // Category-specific product templates
-    const categoryTemplates = {
-      Audio: {
-        names: [
-          "Wireless Noise-Cancelling Headphones",
-          "Bluetooth Speaker Pro",
-          "Smart Soundbar",
-          "Studio Microphone Kit",
-          "Hi-Fi Stereo Earbuds"
-        ],
-        descriptions: [
-          "Experience immersive, crystal-clear sound with deep bass and 30-hour battery life.",
-          "Compact yet powerful speaker that delivers crisp audio for your next party.",
-          "Enhance your TV experience with virtual surround and wireless connectivity.",
-          "Perfect for podcasters and streamers, with professional-grade audio clarity.",
-          "Designed for comfort and performance during daily commutes or workouts."
-        ],
-        images: [
-          "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
-          "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500",
-          "https://images.unsplash.com/photo-1545127398-14699f92334b?w=500",
-          "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=500",
-          "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=500"
-        ]
+    // ================================
+    // 2️⃣ PRODUCTS (25 total, 7 categories)
+    // ================================
+    const products = [
+      // Audio
+      {
+        name: "Wireless Noise-Cancelling Headphones",
+        description: "Premium over-ear headphones with deep bass, 30-hour battery life, and adaptive noise control.",
+        price: 40,
+        category: "Audio",
+        tags: ["wireless", "premium"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.RhcYNnuoPMa5PBSD_CU3zgHaHa?w=198&h=198&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
       },
-      Fashion: {
-        names: [
-          "Classic Denim Jacket",
-          "Silk Summer Dress",
-          "Leather Messenger Bag",
-          "Running Sneakers",
-          "Cotton Hoodie"
-        ],
-        descriptions: [
-          "Timeless and durable, pairs perfectly with any casual outfit.",
-          "Lightweight silk dress with breathable fabric and vibrant colors.",
-          "Hand-crafted messenger bag made from genuine leather.",
-          "High-performance sneakers designed for comfort and style.",
-          "Soft and cozy hoodie with a minimalist modern cut."
-        ],
-        images: [
-          "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-          "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500",
-          "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500",
-          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500",
-          "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500"
-        ]
+      {
+        name: "Bluetooth Speaker Pro",
+        description: "Portable waterproof speaker with rich sound and 24-hour playtime.",
+        price: 31.5,
+        category: "Audio",
+        tags: ["portable", "bestseller"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.zKc_TIA9gpdVDBUwykrKRAHaFj?w=215&h=180&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
       },
-      Home: {
-        names: [
-          "Minimalist LED Lamp",
-          "Ceramic Vase Set",
-          "Smart Wi-Fi Air Purifier",
-          "Aromatherapy Diffuser",
-          "Wall Art Canvas"
-        ],
-        descriptions: [
-          "Sleek modern lamp with adjustable brightness and touch controls.",
-          "Elegant ceramic vase collection perfect for any home decor.",
-          "Advanced air purifier with HEPA filter and smart app control.",
-          "Ultrasonic diffuser with soothing LED lights and timer.",
-          "Premium canvas art print ready to hang."
-        ],
-        images: [
-          "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500",
-          "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=500",
-          "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=500",
-          "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=500",
-          "https://images.unsplash.com/photo-1513519245088-0e3ad4e6e89f?w=500"
-        ]
+      {
+        name: "Studio Microphone Kit",
+        description: "Professional-grade condenser microphone with stand and pop filter.",
+        price: 149.99,
+        category: "Audio",
+        tags: ["studio", "premium"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.5V8WSKHe9m-XvK0-_KXY-QHaHa?w=182&h=182&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
       },
-      Gaming: {
-        names: [
-          "Mechanical Gaming Keyboard",
-          "Wireless Gaming Mouse",
-          "Gaming Headset Pro",
-          "Gaming Controller Elite",
-          "RGB Mouse Pad"
-        ],
-        descriptions: [
-          "RGB backlit mechanical keyboard with customizable keys.",
-          "High-precision wireless mouse with 16,000 DPI sensor.",
-          "7.1 surround sound headset with noise-canceling mic.",
-          "Pro-grade controller with customizable buttons.",
-          "Large RGB mouse pad with non-slip base."
-        ],
-        images: [
-          "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500",
-          "https://images.unsplash.com/photo-1527814050087-3793815479db?w=500",
-          "https://images.unsplash.com/photo-1599669454699-248893623440?w=500",
-          "https://images.unsplash.com/photo-1592840331687-d4c752f4a67c?w=500",
-          "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=500"
-        ]
-      },
-      Fitness: {
-        names: [
-          "Yoga Mat Premium",
-          "Resistance Bands Set",
-          "Smart Fitness Watch",
-          "Foam Roller Pro",
-          "Dumbbell Set"
-        ],
-        descriptions: [
-          "Extra-thick non-slip yoga mat with carrying strap.",
-          "5-piece resistance band set with handles and door anchor.",
-          "Advanced fitness tracker with heart rate and GPS.",
-          "High-density foam roller for muscle recovery.",
-          "Adjustable dumbbell set from 5 to 25 lbs."
-        ],
-        images: [
-          "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500",
-          "https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=500",
-          "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=500",
-          "https://images.unsplash.com/photo-1611672585731-fa10603fb9e0?w=500",
-          "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500"
-        ]
-      },
-      Photography: {
-        names: [
-          "Mirrorless Camera Kit",
-          "Camera Tripod Pro",
-          "LED Ring Light",
-          "Camera Lens 50mm",
-          "Camera Bag"
-        ],
-        descriptions: [
-          "24MP mirrorless camera with 4K video and WiFi.",
-          "Professional tripod with fluid head and quick-release.",
-          "18-inch LED ring light with phone holder.",
-          "Prime lens with f/1.8 aperture for stunning portraits.",
-          "Weatherproof camera bag with padded dividers."
-        ],
-        images: [
-          "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500",
-          "https://images.unsplash.com/photo-1613517526732-98a392514e5c?w=500",
-          "https://images.unsplash.com/photo-1587588354456-ae376af71a25?w=500",
-          "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=500",
-          "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500"
-        ]
-      },
-      Accessories: {
-        names: [
-          "Wireless Charging Pad",
-          "USB-C Hub 7-in-1",
-          "Laptop Stand Aluminum",
-          "Cable Organizer Set",
-          "Phone Mount Car"
-        ],
-        descriptions: [
-          "Fast wireless charger for all Qi-enabled devices.",
-          "Multi-port hub with HDMI, USB 3.0, and SD card reader.",
-          "Ergonomic laptop stand with adjustable height.",
-          "Cable management kit with clips and sleeves.",
-          "Magnetic phone mount with 360-degree rotation."
-        ],
-        images: [
-          "https://images.unsplash.com/photo-1591290619762-c588f7c0f6f3?w=500",
-          "https://images.unsplash.com/photo-1625948515291-69613efd103f?w=500",
-          "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500",
-          "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=500",
-          "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=500"
-        ]
-      }
-    };
 
-    // Generate products (now consistent due to faker.seed())
-    const products = Array.from({ length: productCount }, () => {
-      const category = faker.helpers.arrayElement(categories);
-      const template = categoryTemplates[category];
-      const idx = faker.number.int({ min: 0, max: template.names.length - 1 });
+      // Fashion
+      {
+        name: "Classic Denim Jacket",
+        description: "Timeless denim jacket that pairs perfectly with casual or streetwear looks.",
+        price: 35,
+        category: "Fashion",
+        tags: ["classic", "bestseller"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.eSLaiMmhGTr3HlLPSvWfmQHaKn?w=184&h=264&c=7&r=0&o=7&cb=12&pid=1.7&rm=3"
+        ,name: "Leather Messenger Bag",
+        description: "Elegant leather bag ideal for work or travel.",
+        price: 115,
+        category: "Fashion",
+        tags: ["leather", "premium"],
+        imageUrl: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500",
+      },
+      {
+        name: "Running Sneakers",
+        description: "Lightweight performance sneakers with breathable mesh upper and shock-absorbing sole.",
+        price: 55.99,
+        category: "Fashion",
+        tags: ["sport", "eco"],
+        imageUrl: "https://thvnext.bing.com/th?id=OIF.4b2WR063%2bOoxDPQjyc2ZSw&w=178&h=180&c=7&r=0&o=7&cb=12&pid=1.7&rm=3"
+      
+      
+      
+      
+      },
 
-      return {
-        name: template.names[idx],
-        description: template.descriptions[idx],
-        price: Number(faker.number.float({ min: 15, max: 299, precision: 0.01 }).toFixed(2)),
-        category,
-        tags: pick(tagsPool, faker.number.int({ min: 1, max: 3 })),
-        imageUrl: template.images[idx],
-        stock: faker.number.int({ min: 10, max: 100 }),
-        createdAt: faker.date.recent({ days: 45 }),
-        updatedAt: new Date()
-      };
-    });
+      // Home
+      {
+        name: "Minimalist LED Lamp",
+        description: "Energy-efficient LED desk lamp with touch controls and brightness adjustment.",
+        price: 33,
+        category: "Home",
+        tags: ["lighting", "eco"],
+        imageUrl: "https://tse2.mm.bing.net/th/id/OIP.-C_p7e8gGV7alQ3paVn57gHaHa?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3",
+      },
+      {
+        name: "Ceramic Vase Set",
+        description: "Elegant handcrafted vases perfect for home décor or gifts.",
+        price: 112,
+        category: "Home",
+        tags: ["decor", "minimalist"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.Jt3vjhhjlwovCBjmJb6HVQHaHa?w=172&h=180&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
+      },
+      {
+       name: "Camera Bag",
+  description: "Durable and stylish camera bag with padded compartments to protect your gear and accessories.",
+  price: 55.99,
+  category: "Photography",
+  tags: ["accessory", "camera", "travel"],
+  imageUrl: "https://thvnext.bing.com/th/id/OIP.Hs67jySKodBOSaxpcUU8HAHaIX?w=161&h=182&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",}
+
+      // Gaming
+      ,{
+        name: "Mechanical Gaming Keyboard",
+        description: "RGB mechanical keyboard with customizable lighting and tactile feedback.",
+        price: 87.99,
+        category: "Gaming",
+        tags: ["rgb", "gaming"],
+        imageUrl: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500",
+      },
+      {
+        name: "Wireless Gaming Mouse",
+        description: "High-precision gaming mouse with ergonomic design and long battery life.",
+        price: 90.,
+        category: "Gaming",
+        tags: ["wireless", "pro"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.w3_qntIq7AIuia74zq9figHaHa?w=177&h=180&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
+      },
+      {
+        name: "Gaming Controller Elite",
+        description: "Premium controller compatible with all major consoles and PCs.",
+        price: 75.99,
+        category: "Gaming",
+        tags: ["elite", "controller"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.fUxQwQvQb7WsFVQAX5YjDAAAAA?w=236&h=180&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
+      },
+
+      // Fitness
+      {
+        name: "Yoga Mat Premium",
+        description: "Extra-thick non-slip yoga mat with carrying strap for easy transport.",
+        price: 25.99,
+        category: "Fitness",
+        tags: ["yoga", "lightweight"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.BeDfosBf_YENsn-obSXPagHaHk?w=176&h=180&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
+      },
+      {
+        name: "Smart Fitness Watch",
+        description: "Fitness tracker with GPS, heart-rate monitoring, and step counter.",
+        price: 149.99,
+        category: "Fitness",
+        tags: ["smart", "wearable"],
+        imageUrl: "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=500",
+      },
+      {
+        name: "Resistance Bands Set",
+        description: "5-piece resistance band kit with handles, door anchor, and carrying pouch.",
+        price: 29.99,
+        category: "Fitness",
+        tags: ["home", "workout"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.NSRno7ON-qG7sguiMjsgcAHaHa?w=202&h=202&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
+      },
+
+      // Photography
+      {
+        name: "Mirrorless Camera Kit",
+        description: "24MP mirrorless camera with 4K video and dual-lens package.",
+        price: 150,
+        category: "Photography",
+        tags: ["camera", "pro"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.Xxg_uV5rc73YGv-1WCtdfQHaFV?w=233&h=180&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
+      },
+      {
+        name: "Camera Tripod Pro",
+        description: "Carbon fiber tripod with adjustable ball head and quick-release system.",
+        price: 400,
+        category: "Photography",
+        tags: ["tripod", "lightweight"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.73MDHOPNA5daPh6yMLF9kQHaHa?w=207&h=207&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
+      },
+      {
+        name: "LED Ring Light",
+        description: "18-inch LED ring light perfect for photography, vlogging, and live streaming.",
+        price: 40,
+        category: "Photography",
+        tags: ["lighting", "studio"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.M9gxgOo0LgYlcYe8NU21UQHaHa?w=192&h=192&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
+      },
+
+      // Accessories
+      {
+        name: "Wireless Charging Pad",
+        description: "Fast wireless charging pad for all Qi-enabled devices.",
+        price: 39.99,
+        category: "Accessories",
+        tags: ["charging", "tech"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.-wMLAGjZZeFjzNYDT8keygHaHa?w=186&h=185&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
+      },
+      {
+        name: "USB-C Hub 7-in-1",
+        description: "Multiport hub with HDMI, SD, and USB 3.0 ports for laptops.",
+        price: 25,
+        category: "Accessories",
+        tags: ["usb", "portable"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.xdnsINAt1RN1i_vb-dYE2wHaHU?w=193&h=191&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
+      },
+      {
+        name: "Laptop Stand Aluminum",
+        description: "Ergonomic adjustable laptop stand made from lightweight aluminum.",
+        price: 44.99,
+        category: "Accessories",
+        tags: ["office", "portable"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.XuIVQl7vPZ5xzHh4jfcT5AHaHa?w=201&h=201&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
+      },
+      {
+        name: "Cable Organizer Set",
+        description: "Silicone cable management kit for decluttering your workspace.",
+        price: 40,
+        category: "Accessories",
+        tags: ["organization", "minimalist"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.ZbGVzkUTrzE033JtaGzX-AHaHa?w=180&h=180&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
+      },
+      {
+        name: "Phone Mount Car",
+        description: "Magnetic car mount for smartphones with 360° rotation.",
+        price: 24.99,
+        category: "Accessories",
+        tags: ["car", "mount"],
+        imageUrl: "https://thvnext.bing.com/th/id/OIP.Gsw3NyF84TUg7Ii0IaBMjAHaHa?w=201&h=201&c=7&r=0&o=7&cb=12&pid=1.7&rm=3",
+      },
+    ].map((p) => ({
+      ...p,
+      stock: faker.number.int({ min: 10, max: 100 }),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }));
 
     const prodRes = await productsCol.insertMany(products);
     const productIds = Object.values(prodRes.insertedIds);
 
-    // Generate orders (now consistent due to faker.seed())
+    // ================================
+    // 3️⃣ ORDERS (18 total)
+    // ================================
     const statuses = ["PENDING", "PROCESSING", "SHIPPED", "DELIVERED"];
-    const ordersCount = 18; // ✅ Fixed count
-    const demoCustomerId = customerIds[0];
     const orders = [];
+    const pick = (arr, n) => faker.helpers.arrayElements(arr, n);
 
     function makeOrder(customerId) {
       const n = faker.number.int({ min: 1, max: 3 });
-      const chosenIdx = pick(productIds.map((id, idx) => idx), n);
-      const items = chosenIdx.map(idx => ({
+      const chosenIdx = pick(productIds.map((_, idx) => idx), n);
+      const items = chosenIdx.map((idx) => ({
         productId: productIds[idx],
         name: products[idx].name,
         price: products[idx].price,
-        quantity: faker.number.int({ min: 1, max: 2 })
+        quantity: faker.number.int({ min: 1, max: 2 }),
       }));
-      const total = Number(items.reduce((s, it) => s + it.price * it.quantity, 0).toFixed(2));
+      const total = items.reduce((s, it) => s + it.price * it.quantity, 0).toFixed(2);
       const created = faker.date.recent({ days: 20 });
       return {
         customerId,
         items,
-        total,
+        total: Number(total),
         status: faker.helpers.arrayElement(statuses),
-        carrier: faker.helpers.arrayElement([null, "UPS", "DHL", "USPS", "FedEx"]),
+        carrier: faker.helpers.arrayElement(["UPS", "DHL", "FedEx", "USPS"]),
         estimatedDelivery: faker.date.soon({ days: 7, refDate: created }).toISOString(),
         createdAt: created,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
     }
 
-    // Create 2-3 orders for demo user
-    for (let i = 0; i < 3; i++) {
-      orders.push(makeOrder(demoCustomerId));
-    }
-
-    // Create remaining orders for other customers
-    while (orders.length < ordersCount) {
-      const anyCust = faker.helpers.arrayElement(customerIds);
-      orders.push(makeOrder(anyCust));
-    }
+    for (let i = 0; i < 3; i++) orders.push(makeOrder(demoCustomerId));
+    while (orders.length < 18) orders.push(makeOrder(faker.helpers.arrayElement(customerIds)));
 
     await ordersCol.insertMany(orders);
 
+    // ================================
+    // 4️⃣ SUCCESS RESPONSE
+    // ================================
     res.json({
       success: true,
-      message: "Database seeded successfully with CONSISTENT data!",
+      message: "✅ Database seeded successfully with 12 customers, 25 products, and 18 orders.",
       data: {
-        customers: customerIds.length,
-        products: productIds.length,
+        customers: customers.length,
+        products: products.length,
         orders: orders.length,
-        testUser: "demo@example.com"
-      }
+        testUser: "demo@example.com",
+      },
     });
-
   } catch (error) {
-    console.error("[SEED] Error:", error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
+    console.error("[SEED ERROR]", error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 

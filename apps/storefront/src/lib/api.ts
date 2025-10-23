@@ -1,7 +1,7 @@
 // apps/storefront/src/lib/api.ts
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ||
-  "https://livedrop-issa-el-kadri-production.up.railway.app";
+  import.meta.env.VITE_API_URL ||
+  "https://livedrop-issa-el-kadri-production-bd62.up.railway.app";
 
 // Product type matches your backend data
 export type Product = {

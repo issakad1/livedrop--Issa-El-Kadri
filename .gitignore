@@ -21,10 +21,18 @@ Thumbs.db
 
 # testing and coverage
 coverage/
-*.test.*
-vitest.config.*
-jest.config.*
+
 
 # misc
 .idea/
 .vscode/
+# Node modules
+
+node_modules/
+**/node_modules/
+
+# ✅ Keep only the main test suite
+/tests/*
+!/tests/api.test.js
+!/tests/assistant.test.js
+!/tests/integration.test.js

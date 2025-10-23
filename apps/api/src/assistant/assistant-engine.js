@@ -21,7 +21,8 @@ const __dirname = path.dirname(__filename);
 let config = null;
 function loadConfig() {
   if (!config) {
-    const yamlPath = path.join(__dirname, '../../docs/prompts.yaml');
+    const yamlPath = path.join(__dirname, '../../../docs/prompts.yaml');
+
     const fileContents = fs.readFileSync(yamlPath, 'utf8');
     config = yaml.load(fileContents);
     console.log('[Assistant] prompts.yaml loaded');
