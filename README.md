@@ -15,7 +15,7 @@ I accidenlty deleted it when adding assignment 4
 # 🏪 Livedrop — Week 5 Final MVP
 
 ## 🎯 Overview
-Livedrop is a full-stack e-commerce MVP with a **real backend**, **live order tracking**, and a **smart assistant** built for Week 5 of the AI Developer Program.
+Livedrop is an AI pwowered full-stack e-commerce MVP with a **real backend**, **live order tracking**, and a **smart assistant** built for Week 5 of the AI Developer Program.
 
 It connects the Vite-based storefront with a cloud backend (MongoDB + Express), real-time SSE updates, and an LLM-powered assistant with intent detection and function calling.
 
